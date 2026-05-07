@@ -24,4 +24,4 @@ def create(prompt: str):
             asyncio.run(create_dockerfile(intent_dict))
             break
         else:
-            print("I can only create Dockerfile")
+            print("Currently I can create only Dockerfiles")

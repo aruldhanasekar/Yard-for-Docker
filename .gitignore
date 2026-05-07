@@ -3,3 +3,9 @@ __pycache__/
 .env
 
 docker_agent.egg-info/
+
+main.py
+
+Dockerfile.app
+
+Dockerfile.engine
