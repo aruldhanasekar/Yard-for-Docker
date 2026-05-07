@@ -6,6 +6,7 @@ RULES:
 - STRICTLY write ONLY Docker instructions for Dockerfile.
 - Do NOT explain anything.
 - Do NOT include Markdown.
+- 
 
 #Example1- PIP Package Manager :
 Input:  {
@@ -14,18 +15,64 @@ Input:  {
 }
 
 Output:
- "
-    FROM python:3.12-slim
+{'dockerfiles': [{
+    'docker_instructions' : '
+                                FROM python:3.12-slim
 
-    WORKDIR /app
+                                WORKDIR /app
 
-    COPY requirements.txt .
+                                COPY requirements.txt .
 
-    RUN requirements.txt
+                                RUN requirements.txt
 
-    COPY main.py .
+                                COPY main.py .
 
-    CMD ["python", "main.py"]  "
+                                CMD ["python", "main.py"] ',
+
+    'dockerfile_name' : 'Dockerfile'
+
+}] }
+
+#Example2 - PIP Package Manager:
+
+Input:  {
+    "intent": "create_dockerfile",
+    "files": ["main.py", "app.py"]
+}
+
+Output:
+{'dockerfiles': [{
+    'dockerfile_name' : 'Dockerfile.main',
+    'docker_instructions' : '
+                                FROM python:3.12-slim
+
+                                WORKDIR /app
+
+                                COPY requirements.txt .
+
+                                RUN requirements.txt
+
+                                COPY main.py .
+
+                                CMD ["python", "main.py"] '
+
+},
+{   'dockerfile_name' : 'Dockerfile.app',
+    'docker_instructions' : '
+                                FROM python:3.12-slim
+
+                                WORKDIR /app
+
+                                COPY requirements.txt .
+
+                                RUN requirements.txt
+
+                                COPY app.py .
+
+                                CMD ["python", "app.py"] '
+
+}] }
+
 
 
 #Example2 - UV Manager :
@@ -35,19 +82,20 @@ Input: {
 }
 
 Output:
-"
-    FROM python:3.12-slim
+{'dockerfiles': [{ 'dockerfile_name'' : 'Dockerfile', 
+    'docker_instructions': 
+                            'FROM python:3.12-slim
 
-    WORKDIR /app
+                            WORKDIR /app
 
-    ENV UV_SYSTEM_PYTHON=1
+                            ENV UV_SYSTEM_PYTHON=1
 
-    COPY pyproject.toml uv.lock*.
+                            COPY pyproject.toml uv.lock*.
 
-    RUN uv sync --frozen --no-dev
+                            RUN uv sync --frozen --no-dev
 
-    COPY main.py .
+                            COPY main.py .
 
-    CMD ["uv", "run", "main.py"]
-"
+                            CMD ["uv", "run", "main.py"]'
+"}]}
 """

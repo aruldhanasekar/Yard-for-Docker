@@ -1,18 +1,18 @@
-# AI agent for Docker
+# Yard for Docker
 
-# This project builds an AI agent for docker. 
+Yard is an AI agent for Docker that helps developers instantly create Dockerfiles for their projects.
 
 # Status
     v0 — under active development.
 
 ## What it does
-    - Generates a Dockerfile from a simple command
+    - Generates a one or more Dockerfile from a simple command
     - Detects the Python version from project metadata
     - Designed to help package a Python app for Docker quickly from the terminal
     
 ### Example:
     ```bash
-            agent "create a dockerfile for this main.py file"
+            yard "create a dockerfile for this main.py file"
 
 ## Privacy:
     - This project does not send raw files, scripts, or .env varibles to the AI.

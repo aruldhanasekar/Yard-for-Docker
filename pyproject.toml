@@ -15,4 +15,4 @@ dependencies = [
 where = ["src"]
 
 [project.scripts]
-agent = "docker_agent.docker_agentcli:app"
+yard = "docker_agent.docker_agentcli:app"
