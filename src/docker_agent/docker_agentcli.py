@@ -14,7 +14,15 @@ app = Typer()
 
 
 @app.callback(invoke_without_command=True)
-def create(prompt: str):
+def create(message: str, prod: bool = False):
+    if prod: 
+        prompt = f"{message}, and the project is intended for production use"
+
+    else:
+        prompt = f"{message}, and project is currently in development"
+    
+    # print(prompt)
+
     intent = asyncio.run(intent_identifier(prompt))
 
     intent_dict = json.loads(intent)

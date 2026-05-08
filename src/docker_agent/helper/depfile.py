@@ -2,8 +2,6 @@ import re
 from pathlib import Path
 
 
-
-
 def find_dep_file(start=None):
     if start is None:
         current_root = Path(__file__).resolve()
@@ -18,7 +16,7 @@ def find_dep_file(start=None):
             with Path.open(parent/"pyproject.toml") as f:
                 config = f.read()
 
-                match = re.search( r'requires-python\s*=\s*"((?:<=|>=|==|<|>|=)\s*([0-9.]+))"', config)
+                match = re.search(r'requires-python\s*=\s*"((?:<=|>=|==|<|>|=)\s*([0-9.]+))"', config)
                 if match:
                     version = match.group(1)
 
