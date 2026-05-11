@@ -1,6 +1,6 @@
 # Yard for Docker
 
-Yard is an AI agent for Docker that helps developers instantly create Dockerfiles for their projects.
+Yard is an AI agent for Docker, at first version that helps developers instantly create Dockerfiles for their projects.
 
 # Status
     v0 — under active development.
