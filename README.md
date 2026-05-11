@@ -18,7 +18,6 @@ What it does:
 
     ```bash
             yard "create a dockerfile for this main.py file" 
-    ```
 
 ## Privacy:
     This project does not send raw files, scripts, or .env varibles to the AI.
