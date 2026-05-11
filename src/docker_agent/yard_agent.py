@@ -6,8 +6,6 @@ from openai import AsyncOpenAI
 from docker_agent.prompt.agent_prompt import SYSTEM_PROMPT
 
 
-
-
 load_dotenv(".env")
 
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))

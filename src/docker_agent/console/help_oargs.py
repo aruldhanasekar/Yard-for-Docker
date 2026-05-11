@@ -1,5 +1,4 @@
 from rich import print as rprint
-from rich.table import Table
 from rich.panel import Panel
 from rich import box
 
@@ -12,3 +11,7 @@ def custom_help():
                      title_align="left",
                      border_style="dim"
                     ))
+    rprint(Panel(renderable='[bold yellow]yard[/bold yellow] [cyan]"Create a dockerfile for main.py"[cyan]', 
+                 title="Example command", 
+                 title_align="left", 
+                 border_style="white"))
