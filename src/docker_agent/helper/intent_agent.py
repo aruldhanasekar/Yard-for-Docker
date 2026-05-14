@@ -1,10 +1,12 @@
 import asyncio
 import os
 from dotenv import load_dotenv
+import json
 
 from openai import AsyncOpenAI
 
 from docker_agent.prompt.intent_prompt import SYSTEM_PROMPT
+from docker_agent.schema.intent_schema import INTENT_TOOLS
 
 load_dotenv(".env")
 
@@ -25,52 +27,31 @@ async def intent_identifier(intent):
     response = await client.chat.completions.create(
         model="gpt-4.1-nano",
         messages=messages,
-        response_format={
-            "type": "json_schema",
-            "json_schema": {
-                "name": "intent_identifier",
-                "strict": True,
-                "schema": {
-                    "type" : "object",
-                    "properties" : {
-                        "intent" : {
-                            "type" : "string",
-                            "enum": [
-                                "create_dockerfile",
-                                "unrelated_intent"
-                            ]
-                        },
-                        "runnable_file": {
-                            "type" : ["array", "null"],
-                            "items" : {
-                                "type" : "object",
-                                "properties": {
-                                    "file" : {
-                                        "type" : "string"
-                                    },
-                                    "folder" : {
-                                        "type" : "string"
-                                    }
-                                },
-                                "required" : ["file", "folder"],
-                                "additionalProperties": False
-                            }
-                        },
-                        "mode" : {
-                            "type" : ["string", "null"]
-                        },
-                        "response" : {
-                            "type" : ["string", "null"]
-                        }
-                    },
-                    "required" : ["intent", "runnable_file", "mode", "response"],
-                    "additionalProperties": False
-                }
-            }
-        }
+        tools=INTENT_TOOLS,
+        tool_choice="auto"
 )
     
-    return response.choices[0].message.content
+    messages = response.choices[0].message
+
+    if messages.tool_calls:
+        tool_call = messages.tool_calls[0]
+
+        task_name = tool_call.function.name 
+
+        arguments = json.loads(
+            tool_call.function.arguments
+        )
+
+        return {
+            "success": True,
+            "task": task_name,
+            "data": arguments
+        }
+    
+    return {
+        "success" : False,
+        "message" : messages.content
+    }
 
 if __name__ == "__main__":
     print(asyncio.run(intent_identifier("Create a dockerfile for modelai.py from src directory")))
