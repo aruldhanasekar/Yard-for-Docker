@@ -8,7 +8,7 @@ v0 — under active development.
 
 ## What it does
 
-* Generates one or more Dockerfiles and a .dockerignore file from a simple command.
+* Generates one or more Dockerfiles and a .dockerignore file from a simple command
 * Detects the Python version from project metadata
 * Is designed to help package a Python app for Docker quickly from the terminal
 * 
