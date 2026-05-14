@@ -11,3 +11,6 @@ Dockerfile.app
 Dockerfile.engine
 
 Dockerfile.main
+
+
+src/docker_agent/prompt/dockerfile_prompt.jinja2
