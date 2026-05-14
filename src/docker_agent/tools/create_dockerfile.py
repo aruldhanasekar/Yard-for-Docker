@@ -17,14 +17,14 @@ async def create_dockerfile(intent):
     with console.status(
         "[bold cyan]Generating Dockerfiles files...."
     ):
-        docker_instructions = await yard_devops(prompt)
+        output = await yard_devops(prompt)
 
-        files = json.loads(docker_instructions)
+        print(output)
         
-        for doc in files["dockerfiles"]:
+        for doc in output["dockerfiles"]:
             console.print(f"[green] Generating Docker instructions for {doc["dockerfile_name"]}...")  
             with open(doc["dockerfile_name"], "w") as file:
-                file.write(doc["docker_instructions"])
+                file.write(doc["dockerfile_instructions"])
                 console.print(f"✓ [green] {doc["dockerfile_name"]} created.")
 
 #     print("done")
