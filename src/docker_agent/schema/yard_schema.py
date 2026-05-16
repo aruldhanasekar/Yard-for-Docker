@@ -28,20 +28,5 @@ TOOLS = [
                 "additionalProperties" : False
             }
         }
-    },
-    {
-        "type" : "function",
-        "function": {
-            "name" : "create_dockerignore",
-            "description" : "Create a .dockerignore file using given information",
-            "parameters" : {
-                "type" : "object",
-                "properties" : {
-                    "dockerignore_file": {
-                        "type" : "string"
-                    } 
-                }
-            }
-        }
     }
 ]
