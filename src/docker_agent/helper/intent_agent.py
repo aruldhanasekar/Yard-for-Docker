@@ -42,16 +42,19 @@ async def intent_identifier(intent):
             tool_call.function.arguments
         )
 
+            
+        if task_name == "non_docker_request":
+            return {
+                "success" : False,
+                "task" : task_name,
+                "data" : arguments
+            }
+           
         return {
             "success": True,
             "task": task_name,
             "data": arguments
         }
-    
-    return {
-        "success" : False,
-        "message" : messages.content
-    }
 
 if __name__ == "__main__":
     print(asyncio.run(intent_identifier("Create a dockerfile for modelai.py from src directory")))

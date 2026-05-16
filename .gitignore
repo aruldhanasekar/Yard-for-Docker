@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 .env
+app.log
 
 docker_agent.egg-info/
 
@@ -12,5 +13,7 @@ Dockerfile.engine
 
 Dockerfile.main
 
+Dockerfile.model
+.dockerignore
 
 src/docker_agent/prompt/dockerfile_prompt.jinja2

@@ -3,7 +3,7 @@ import json
 import typer
 from typer import Typer, Context, Option, Argument
 from typer.core import TyperGroup
-from docker_agent.console.console_api import console
+from docker_agent.console.console_ui import console, info, success
 from docker_agent.console.help_oargs import custom_help
 from docker_agent.helper.intent_agent import intent_identifier
 from docker_agent.console.error import command_error
@@ -41,23 +41,29 @@ def yard_agent(
         "-h",
         is_eager=True,
     ),
-):
-    if help:
-        custom_help()
-        raise typer.Exit()
-     
+):  
     with console.status(
-        "[bold cyan]Analyzing user requirements..."
+        "[cyan]Analyzing request[/cyan]"
     ):
+        if help:
+            custom_help()
+            raise typer.Exit()
+     
         result = asyncio.run(intent_identifier(prompt))
 
+    if result["success"] is True:
+
         intent = result["data"]
-        
-    if result["success"]:
-        asyncio.run(create_dockerfile(intent))
-    
+        if result["data"]["task"] == "create_dockerfile":
+
+            success(f"Prepared {result['data']['task']} tasks")
+
+            asyncio.run(create_dockerfile(intent))
+
+        elif result["data"]["task"] == "create_dockerignore":
+
+            success(f"Prepared {result['data']['task']} tasks")
+
+            asyncio.run(dockerignore_file(intent))
     else:
-        print(result["message"])
-    
-
-
+        info(result["data"]["message"])
