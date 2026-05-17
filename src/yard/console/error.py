@@ -9,3 +9,4 @@ def command_error(cmd):
                  title_align="left",
                  border_style="red"
                  ))
+    

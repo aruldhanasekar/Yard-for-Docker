@@ -3,8 +3,8 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "yard_agent"
-version = "0.1.0"
+name = "yardx"
+version = "0.1.2"
 description = "Terminal based AI agent for Docker"
 readme = "README.md"
 requires-python = ">=3.13"

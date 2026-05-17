@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 from logging import WARNING
 from dotenv import load_dotenv
@@ -30,19 +31,6 @@ logger = get_logger(__name__)
 load_dotenv()
 
 
-def get_openai_client():
-    api_key = os.environ.get("OPENAI_API_KEY")
-
-    if not api_key:
-        typer.echo("OPENAI_API_KEY is not set")
-        raise typer.Exit(code=1)
-
-    return AsyncOpenAI(
-        api_key=api_key,
-        timeout=60
-    )
-
-client = get_openai_client()
 
 @retry(
         retry=retry_if_exception_type((
@@ -63,6 +51,9 @@ client = get_openai_client()
         reraise=True
 )
 async def yard_devops(intent):
+    
+    client = AsyncOpenAI(timeout=60)
+
     messages = [{
         "role": "system",
         "content": SYSTEM_PROMPT

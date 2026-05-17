@@ -20,18 +20,18 @@ def get_openai_client():
     api_key = os.environ.get("OPENAI_API_KEY")
 
     if not api_key:
-        typer.echo("OPENAI_API_KEY is not set")
-        raise typer.Exit(code=1)
+        raise RuntimeError("OPENAI_API_KEY is not set")
 
     return AsyncOpenAI(
         api_key=api_key,
         timeout=60
     )
 
-client = get_openai_client()
-
 
 async def intent_identifier(intent):
+
+    client = get_openai_client()
+    
     messages = [{
                     "role": "system", 
                     "content": SYSTEM_PROMPT
