@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
-from docker_agent.console.console_ui import console, success
-from docker_agent.logger_config import get_logger
+from yard.console.console_ui import success
+from yard.logger_config import get_logger
 
 
 logger = get_logger(__name__)

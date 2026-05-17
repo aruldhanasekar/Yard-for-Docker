@@ -1,10 +1,10 @@
 import asyncio
 import json
-from docker_agent.logger_config import get_logger
-from docker_agent.yard_agent import yard_devops
-from docker_agent.helper.depfile import find_dep_file
-from docker_agent.console.console_ui import console, success
-from docker_agent.prompt.tasks.dockerfile_prompt import prompt
+from yard.logger_config import get_logger
+from yard.yard_agent import yard_devops
+from yard.helper.depfile import find_dep_file
+from yard.console.console_ui import console, success
+from yard.prompt.tasks.dockerfile_prompt import prompt
 
 logger = get_logger(__name__)
 

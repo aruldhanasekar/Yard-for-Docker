@@ -1,6 +1,7 @@
 from rich.console import Console
 
 
+
 console = Console()
 
 def success(message: str) -> None:
@@ -8,3 +9,6 @@ def success(message: str) -> None:
 
 def info(message: str) -> None:
     console.print(f"[cyan]{message}[/cyan]")
+
+def error(message: str) -> None:
+    console.print(f"[red]{message}[/red]")

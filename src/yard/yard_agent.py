@@ -2,6 +2,7 @@ import os
 import json
 from logging import WARNING
 from dotenv import load_dotenv
+import typer
 
 from tenacity import (
     retry,
@@ -18,17 +19,25 @@ from openai import (
     InternalServerError,
 )
 
-from docker_agent.logger_config import get_logger
-from docker_agent.prompt.agent_prompt import SYSTEM_PROMPT
-from docker_agent.schema.yard_schema import TOOLS
-
+from yard.logger_config import get_logger
+from yard.prompt.agent_prompt import SYSTEM_PROMPT
+from yard.schema.yard_schema import TOOLS
+from yard.console.console_ui import error
 
 
 
 logger = get_logger(__name__)
-load_dotenv(".env")
+load_dotenv()
 
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=60)
+
+def get_openai_client():
+    if not os.getenv("OPENAI_API_KEY"):
+        typer.echo("OPENAI_API_KEY is not set")
+        raise typer.Exit(code=1)
+
+    return AsyncOpenAI(timeout=60)
+
+client = get_openai_client()
 
 
 @retry(
