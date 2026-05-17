@@ -22,5 +22,6 @@ dist/
 
 yard.egg.info/
 yard_yard.egg-info/
+yard_agent.egg-info
 
 build /

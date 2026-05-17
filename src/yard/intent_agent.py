@@ -17,11 +17,16 @@ load_dotenv()
 
 
 def get_openai_client():
-    if not os.getenv("OPENAI_API_KEY"):
+    api_key = os.environ.get("OPENAI_API_KEY")
+
+    if not api_key:
         typer.echo("OPENAI_API_KEY is not set")
         raise typer.Exit(code=1)
 
-    return AsyncOpenAI(timeout=60)
+    return AsyncOpenAI(
+        api_key=api_key,
+        timeout=60
+    )
 
 client = get_openai_client()
 
