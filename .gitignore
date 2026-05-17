@@ -20,6 +20,7 @@ src/docker_agent/prompt/dockerfile_prompt.jinja2
 
 dist/
 
-yard.egg-info
+yard.egg.info/
+yard_yard.egg-info/
 
 build /
