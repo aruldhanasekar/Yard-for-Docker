@@ -3,15 +3,20 @@ import json
 import typer
 from typer import Typer, Context, Option, Argument
 from typer.core import TyperGroup
-from docker_agent.console.console_ui import console, info, success
-from docker_agent.console.help_oargs import custom_help
-from docker_agent.helper.intent_agent import intent_identifier
-from docker_agent.console.error import command_error
+from yard.intent_agent import intent_identifier
+
+from yard.console.help_oargs import custom_help
+from yard.console.console_ui import console, info, success
+from yard.console.error import command_error
+from yard.logger_config import get_logger
 
 
-from docker_agent.tools.create_dockerfile import create_dockerfile
-from docker_agent.tools.docker_ignore_file import dockerignore_file
 
+from yard.tools.create_dockerfile import create_dockerfile
+from yard.tools.docker_ignore_file import dockerignore_file
+
+
+logger = get_logger(__name__)
 
 class CustomGroup(TyperGroup):
     def get_command(self, ctx, cmd_name):
@@ -48,22 +53,28 @@ def yard_agent(
         if help:
             custom_help()
             raise typer.Exit()
-     
+
+        logger.info("Sending the user message to intent agent")
+
         result = asyncio.run(intent_identifier(prompt))
 
     if result["success"] is True:
 
         intent = result["data"]
+
         if result["data"]["task"] == "create_dockerfile":
 
             success(f"Prepared {result['data']['task']} tasks")
+            logger.info("Sending the dockerfile intent to create_dockerfile function")
 
             asyncio.run(create_dockerfile(intent))
 
         elif result["data"]["task"] == "create_dockerignore":
 
             success(f"Prepared {result['data']['task']} tasks")
+            logger.info("Sending the ignored files to dockerignore_file function")
 
             asyncio.run(dockerignore_file(intent))
     else:
+        logger.info(f"{result["data"]["message"]}")
         info(result["data"]["message"])

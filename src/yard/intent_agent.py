@@ -2,16 +2,28 @@ import asyncio
 import os
 from dotenv import load_dotenv
 import json
+import typer
 
 from openai import AsyncOpenAI
 
-from docker_agent.prompt.intent_prompt import SYSTEM_PROMPT
-from docker_agent.schema.intent_schema import INTENT_TOOLS
+from yard.prompt.intent_prompt import SYSTEM_PROMPT
+from yard.schema.intent_schema import INTENT_TOOLS
 
-load_dotenv(".env")
+from yard.logger_config import get_logger
+
+logger = get_logger(__name__)
+
+load_dotenv()
 
 
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def get_openai_client():
+    if not os.getenv("OPENAI_API_KEY"):
+        typer.echo("OPENAI_API_KEY is not set")
+        raise typer.Exit(code=1)
+
+    return AsyncOpenAI(timeout=60)
+
+client = get_openai_client()
 
 
 async def intent_identifier(intent):
@@ -44,12 +56,14 @@ async def intent_identifier(intent):
 
             
         if task_name == "non_docker_request":
+            logger.info("Task is not related to Docker")
             return {
                 "success" : False,
                 "task" : task_name,
                 "data" : arguments
             }
-           
+
+        logger.info(f"Task {task_name} Indentified")   
         return {
             "success": True,
             "task": task_name,

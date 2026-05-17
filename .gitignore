@@ -17,3 +17,9 @@ Dockerfile.model
 .dockerignore
 
 src/docker_agent/prompt/dockerfile_prompt.jinja2
+
+dist/
+
+yard.egg-info
+
+build /

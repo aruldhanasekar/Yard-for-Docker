@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from docker_agent.console.console_ui import console, success
+from yard.console.console_ui import console, success
 
 
 def find_dep_file(start=None):

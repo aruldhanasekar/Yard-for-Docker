@@ -1,9 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "docker-agent"
+name = "yard"
 version = "0.1.0"
 description = "Terminal based AI agent for Docker"
 readme = "README.md"
 requires-python = ">=3.13"
+
 dependencies = [
     "openai>=2.33.0",
     "python-dotenv>=1.2.2",
@@ -11,9 +16,11 @@ dependencies = [
     "typer>=0.25.1",
 ]
 
+[project.scripts]
+yard = "yard.yard_cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[project.scripts]
-yard = "docker_agent.docker_agentcli:app"

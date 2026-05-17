@@ -1,4 +1,4 @@
-from docker_agent.prompt.tasks.examples.dockerfile_example import EXAMPLE_TEMPLATES
+from yard.prompt.tasks.examples.dockerfile_example import EXAMPLE_TEMPLATES
 
 
 
