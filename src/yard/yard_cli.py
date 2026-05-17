@@ -1,7 +1,7 @@
+import sys
 import asyncio
-import json
 import typer
-from typer import Typer, Context, Option, Argument
+from typer import Typer, Option, Argument
 from typer.core import TyperGroup
 from yard.intent_agent import intent_identifier
 
@@ -18,6 +18,9 @@ from yard.tools.docker_ignore_file import dockerignore_file
 
 logger = get_logger(__name__)
 
+VERSION = "0.1.2"
+
+
 class CustomGroup(TyperGroup):
     def get_command(self, ctx, cmd_name):
         rv = super().get_command(ctx, cmd_name)
@@ -29,13 +32,15 @@ class CustomGroup(TyperGroup):
 
         raise typer.Exit(code=1)
 
+
 app = Typer(cls=CustomGroup, 
             # Typer stops decorating exceptions
             pretty_exceptions_enable=False,
             context_settings={
             # To prevent using the typer's default behaviour of "--help" or '-h'
             "help_option_names" : []
-        })
+            }
+        )
 
 @app.callback(invoke_without_command=True)
 def yard_agent(
@@ -46,6 +51,12 @@ def yard_agent(
         "-h",
         is_eager=True,
     ),
+    version: bool = Option(
+        False,
+        "--version",
+        "-v",
+        is_eager=True,
+    ),
 ):  
     with console.status(
         "[cyan]Analyzing request[/cyan]"
@@ -53,10 +64,22 @@ def yard_agent(
         if help:
             custom_help()
             raise typer.Exit()
+        
+        if len(sys.argv) < 2:
+            custom_help()
+            raise typer.Exit()
+        
+        if version:
+            print(VERSION)
+            raise typer.Exit()
+        try:
+            logger.info("Sending the user message to intent agent")
 
-        logger.info("Sending the user message to intent agent")
+            result = asyncio.run(intent_identifier(prompt))
 
-        result = asyncio.run(intent_identifier(prompt))
+        except RuntimeError as e:
+            print("OPENAI_API_KET is not set")
+            raise typer.Exit(code=1)
 
     if result["success"] is True:
 

@@ -21,6 +21,18 @@ def custom_help():
     rprint(
         Panel(
             renderable=(
+                "[bold cyan]--help[/bold cyan]      [white]Show this message and exit[/white]\n" \
+                "[bold cyan]-h[/bold cyan]          [white]Show this message and exit[/white]"
+            ),
+            title="Options",
+            title_align="left",
+            border_style="dim"
+        )
+    )
+
+    rprint(
+        Panel(
+            renderable=(
                 "[white]Supported Tasks[/white]\n\n"
                 "• Create Dockerfile\n"
                 "• Create .dockerignore\n"

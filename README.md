@@ -15,7 +15,7 @@ v1 — under active development.
 ## Install
 
 ```bash
-pipx install yard
+pipx install yardx
 ```
 
 ## Setup
