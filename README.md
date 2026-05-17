@@ -1,6 +1,6 @@
 # Yard for Docker
 
-Yard is a terminal-based AI agent for Docker. In this first version, it helps developers quickly generate Dockerfiles for Python projects directly from the terminal.
+Yard is a terminal-based AI agent for Docker.
 
 ## Status
 
