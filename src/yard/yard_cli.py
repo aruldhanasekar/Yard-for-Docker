@@ -66,7 +66,7 @@ def yard_agent(
         is_eager=True,
     ),
 ):  
-    # it identifies whether typer misunderstood the optional args as prompt
+    # it identifies whether typer misinterpret the optional args as prompt
     if ctx.args or (prompt and prompt.startswith("-")):
         no_option = ctx.args[0] if ctx.args else prompt   
         command_error(no_option)
@@ -90,7 +90,7 @@ def yard_agent(
             result = asyncio.run(intent_identifier(prompt))
 
         except RuntimeError:
-            print("OPENAI_API_KEy is not set")
+            print("OPENAI_API_KEY is not set")
             raise typer.Exit(code=1)
 
     if result["success"] is True:
