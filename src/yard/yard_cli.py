@@ -18,7 +18,7 @@ from yard.tools.docker_ignore_file import dockerignore_file
 
 logger = get_logger(__name__)
 
-VERSION = "0.1.2"
+__version__ = "0.1.5"
 
 
 class CustomGroup(TyperGroup):
@@ -32,18 +32,25 @@ class CustomGroup(TyperGroup):
 
         raise typer.Exit(code=1)
 
+def version_callback(value: str):
+    if value:
+        print(f"yard {__version__}")
+        raise typer.Exit()
 
 app = Typer(cls=CustomGroup, 
             # Typer stops decorating exceptions
             pretty_exceptions_enable=False,
             context_settings={
             # To prevent using the typer's default behaviour of "--help" or '-h'
-            "help_option_names" : []
-            }
+            "help_option_names" : [],
+            "ignore_unknown_options": True
+            },
+            rich_markup_mode=None
         )
 
 @app.callback(invoke_without_command=True)
 def yard_agent(
+    ctx: typer.Context,
     prompt: str = Argument(""), 
     help: bool = Option(
         False,
@@ -55,30 +62,35 @@ def yard_agent(
         False,
         "--version",
         "-v",
+        callback=version_callback,
         is_eager=True,
     ),
 ):  
+    # it identifies whether typer misunderstood the optional args as prompt
+    if ctx.args or (prompt and prompt.startswith("-")):
+        no_option = ctx.args[0] if ctx.args else prompt   
+        command_error(no_option)
+        raise typer.Exit(code=1)
+
+    if help:
+        custom_help()
+        raise typer.Exit()
+        
+    if len(sys.argv) < 2:
+        custom_help()
+        raise typer.Exit()
+    
+    
     with console.status(
         "[cyan]Analyzing request[/cyan]"
     ):
-        if help:
-            custom_help()
-            raise typer.Exit()
-        
-        if len(sys.argv) < 2:
-            custom_help()
-            raise typer.Exit()
-        
-        if version:
-            print(VERSION)
-            raise typer.Exit()
         try:
             logger.info("Sending the user message to intent agent")
 
             result = asyncio.run(intent_identifier(prompt))
 
-        except RuntimeError as e:
-            print("OPENAI_API_KET is not set")
+        except RuntimeError:
+            print("OPENAI_API_KEy is not set")
             raise typer.Exit(code=1)
 
     if result["success"] is True:
